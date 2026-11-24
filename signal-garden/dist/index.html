@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Signal Garden is a private, local-first home for unfinished thoughts, promising experiments, and the next small step."
+    />
+    <meta name="theme-color" content="#0b1110" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <title>Signal Garden — Grow the ideas worth returning to</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to your garden</a>
+    <div class="atmosphere" aria-hidden="true">
+      <span class="glow glow-one"></span>
+      <span class="glow glow-two"></span>
+      <span class="grain"></span>
+    </div>
+
+    <header class="site-header shell">
+      <a class="brand" href="#top" aria-label="Signal Garden home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Signal Garden</span>
+      </a>
+      <div class="header-actions" role="group" aria-label="Garden data actions">
+        <span class="privacy-note"><span aria-hidden="true">●</span> Saved in this browser</span>
+        <button class="quiet-button" id="export-button" type="button">Export</button>
+        <button class="quiet-button" id="import-button" type="button">Import</button>
+        <input id="import-input" type="file" accept="application/json,.json" hidden />
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="hero shell" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">A quiet place for unfinished thinking</p>
+          <h1 id="hero-title">Grow the ideas worth returning to.</h1>
+          <p class="hero-intro">
+            A private, local-first garden for promising experiments, loose threads,
+            and the next small step.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-button" id="open-composer" type="button">
+              <span aria-hidden="true">＋</span> Plant a seed
+            </button>
+            <button class="text-button" id="tour-button" type="button">How it grows</button>
+          </div>
+          <dl class="garden-stats" aria-label="Garden summary">
+            <div>
+              <dt>Growing</dt>
+              <dd id="stat-growing">0</dd>
+            </div>
+            <div>
+              <dt>Blooming</dt>
+              <dd id="stat-blooming">0</dd>
+            </div>
+            <div>
+              <dt>Need sunlight</dt>
+              <dd id="stat-sunlight">0</dd>
+            </div>
+          </dl>
+        </div>
+
+        <aside class="weather-card" aria-labelledby="weather-heading">
+          <div class="weather-orbit" id="weather-orbit" aria-hidden="true">
+            <span class="weather-core"></span>
+            <span class="weather-ring ring-one"></span>
+            <span class="weather-ring ring-two"></span>
+          </div>
+          <div>
+            <p class="weather-label">Garden weather</p>
+            <h2 id="weather-heading">Fresh soil</h2>
+            <p id="weather-copy">Plant a thought to see your forecast.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="composer-wrap shell" id="composer-section" hidden aria-labelledby="composer-heading">
+        <div class="composer-card">
+          <div class="section-kicker">
+            <p class="eyebrow">New growth</p>
+            <button class="icon-button" id="close-composer" type="button" aria-label="Close seed form">×</button>
+          </div>
+          <h2 id="composer-heading">What keeps returning to you?</h2>
+          <form id="seed-form">
+            <div class="form-grid">
+              <label class="field field-wide">
+                <span>Seed title</span>
+                <input
+                  id="seed-title"
+                  name="title"
+                  type="text"
+                  maxlength="100"
+                  placeholder="A tiny tool for better meetings"
+                  autocomplete="off"
+                  required
+                />
+              </label>
+              <label class="field field-wide">
+                <span>What is pulling you toward it?</span>
+                <textarea
+                  id="seed-note"
+                  name="note"
+                  rows="3"
+                  maxlength="800"
+                  placeholder="Capture the signal before you polish it."
+                ></textarea>
+              </label>
+              <label class="field">
+                <span>Energy it needs</span>
+                <select id="seed-energy" name="energy">
+                  <option value="1">1 · A few minutes</option>
+                  <option value="2">2 · Light lift</option>
+                  <option value="3" selected>3 · Focused block</option>
+                  <option value="4">4 · Deep work</option>
+                  <option value="5">5 · Full expedition</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Potential impact</span>
+                <select id="seed-impact" name="impact">
+                  <option value="1">1 · Nice to have</option>
+                  <option value="2">2 · Useful</option>
+                  <option value="3" selected>3 · Meaningful</option>
+                  <option value="4">4 · High leverage</option>
+                  <option value="5">5 · Could change things</option>
+                </select>
+              </label>
+              <label class="field field-wide">
+                <span>Tag <small>optional</small></span>
+                <input id="seed-tag" name="tag" type="text" maxlength="28" placeholder="work, life, curious…" autocomplete="off" />
+              </label>
+            </div>
+            <div class="form-actions">
+              <p>Your garden stays in this browser.</p>
+              <button class="primary-button" type="submit">Plant this seed</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="sunlight-section shell" id="sunlight-section" aria-labelledby="sunlight-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">A gentle nudge</p>
+            <h2 id="sunlight-heading">Needs sunlight</h2>
+          </div>
+          <p>High-impact ideas that have gone quiet.</p>
+        </div>
+        <div class="sunlight-row" id="sunlight-row"></div>
+      </section>
+
+      <section class="garden-section shell" id="garden" aria-labelledby="garden-heading">
+        <div class="section-heading garden-heading-row">
+          <div>
+            <p class="eyebrow">Your living collection</p>
+            <h2 id="garden-heading">The garden</h2>
+          </div>
+          <label class="search-field">
+            <span class="visually-hidden">Search your garden</span>
+            <span aria-hidden="true">⌕</span>
+            <input id="search-input" type="search" placeholder="Search thoughts" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="garden-toolbar">
+          <div class="stage-filters" role="group" aria-label="Filter by growth stage">
+            <button class="filter-button active" type="button" data-stage="all" aria-pressed="true">All</button>
+            <button class="filter-button" type="button" data-stage="seed" aria-pressed="false">Seeds</button>
+            <button class="filter-button" type="button" data-stage="sprout" aria-pressed="false">Sprouts</button>
+            <button class="filter-button" type="button" data-stage="bloom" aria-pressed="false">Blooms</button>
+            <button class="filter-button" type="button" data-stage="archived" aria-pressed="false">Archive</button>
+          </div>
+          <label class="sort-field">
+            <span>Sort</span>
+            <select id="sort-select">
+              <option value="sunlight">Needs sunlight</option>
+              <option value="recent">Recently tended</option>
+              <option value="impact">Highest impact</option>
+              <option value="alpha">A–Z</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="tag-filters" id="tag-filters" role="group" aria-label="Filter by tag"></div>
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <div class="garden-grid" id="garden-grid"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-plant" aria-hidden="true"><i></i><i></i><i></i></span>
+          <h3 id="empty-title">Nothing is growing here yet.</h3>
+          <p id="empty-copy">Plant the thought you keep returning to.</p>
+          <button class="primary-button" id="empty-action" type="button">Plant a seed</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer shell">
+      <p><span class="brand-mark small" aria-hidden="true"><i></i><i></i><i></i></span> Signal Garden</p>
+      <p>Private by design. No account, no feed, no cloud sync.</p>
+    </footer>
+
+    <dialog class="seed-dialog" id="seed-dialog" aria-labelledby="dialog-title">
+      <form id="edit-form">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow" id="dialog-stage">Seed</p>
+            <h2 id="dialog-title">Tend this thought</h2>
+          </div>
+          <button class="icon-button" id="close-dialog" type="button" aria-label="Close seed details">×</button>
+        </div>
+        <div class="dialog-body">
+          <label class="field">
+            <span>Title</span>
+            <input id="edit-title" type="text" maxlength="100" required />
+          </label>
+          <label class="field">
+            <span>Notes</span>
+            <textarea id="edit-note" rows="5" maxlength="800"></textarea>
+          </label>
+          <label class="field">
+            <span>Next small step</span>
+            <input id="edit-next-step" type="text" maxlength="180" placeholder="Make it small enough to start." />
+          </label>
+          <div class="dialog-grid">
+            <label class="field">
+              <span>Stage</span>
+              <select id="edit-stage">
+                <option value="seed">Seed</option>
+                <option value="sprout">Sprout</option>
+                <option value="bloom">Bloom</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Tag</span>
+              <input id="edit-tag" type="text" maxlength="28" />
+            </label>
+            <label class="field">
+              <span>Energy</span>
+              <select id="edit-energy">
+                <option value="1">1 · Minutes</option>
+                <option value="2">2 · Light</option>
+                <option value="3">3 · Focused</option>
+                <option value="4">4 · Deep</option>
+                <option value="5">5 · Expedition</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Impact</span>
+              <select id="edit-impact">
+                <option value="1">1 · Nice</option>
+                <option value="2">2 · Useful</option>
+                <option value="3">3 · Meaningful</option>
+                <option value="4">4 · High</option>
+                <option value="5">5 · Transformative</option>
+              </select>
+            </label>
+          </div>
+          <p class="seed-meta" id="seed-meta"></p>
+        </div>
+        <div class="dialog-actions">
+          <div>
+            <button class="danger-text-button" id="delete-seed" type="button">Delete</button>
+            <button class="quiet-button" id="archive-seed" type="button">Archive</button>
+          </div>
+          <div>
+            <button class="quiet-button" id="focus-seed" type="button">Focus</button>
+            <button class="primary-button" type="submit">Save changes</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="focus-dialog" id="focus-dialog" aria-labelledby="focus-title">
+      <div class="focus-shell">
+        <div class="dialog-header focus-header">
+          <div>
+            <p class="eyebrow">One seed. One next step.</p>
+            <h2 id="focus-title">Focus</h2>
+          </div>
+          <button class="icon-button" id="close-focus" type="button" aria-label="Close focus session">×</button>
+        </div>
+        <label class="field focus-step">
+          <span>What will move this forward?</span>
+          <input id="focus-next-step" type="text" maxlength="180" placeholder="Name one visible action." />
+        </label>
+        <div class="timer" id="timer-display" role="timer" aria-live="off">15:00</div>
+        <div class="timer-presets" role="group" aria-label="Choose focus duration">
+          <button type="button" data-minutes="5" aria-pressed="false">5 min</button>
+          <button class="active" type="button" data-minutes="15" aria-pressed="true">15 min</button>
+          <button type="button" data-minutes="25" aria-pressed="false">25 min</button>
+        </div>
+        <div class="focus-actions">
+          <button class="quiet-button" id="timer-reset" type="button">Reset</button>
+          <button class="primary-button" id="timer-toggle" type="button">Start focus</button>
+        </div>
+        <button class="complete-button" id="complete-session" type="button">Complete session &amp; water seed</button>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
